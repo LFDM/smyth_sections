@@ -5,6 +5,7 @@
 #   csv
 #   json
 #   grouped_json
+#   grouped_js
 
 
 require 'nokogiri'
@@ -58,6 +59,12 @@ class SectionList
 
   def wrap_as_obj
     "{\n#{yield}\n}"
+  end
+
+  def to_grouped_js
+    wrap_as_obj do
+      group_by_range.map { |r, f| "  #{r} : #{f}}" }.join(",\n")
+    end
   end
 
   def to_json
