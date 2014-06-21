@@ -68,7 +68,7 @@ class SectionList
 
   def to_grouped_json
     wrap_as_obj do
-      group_by_range.map { |r, f| "  #{r} : #{f}}" }.join(",\n")
+      group_by_range.map { |r, f| %{  "#{r}" : "#{f}"} }.join(",\n")
     end
   end
 
