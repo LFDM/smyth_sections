@@ -28,12 +28,33 @@ class SectionList
     end
   end
 
+  def group_by_range
+    last_file = nil
+    sections_only.each_with_object({}) do |section, hsh|
+      file = section.file
+      if file != last_file
+        last_file = file
+        hsh[file] = [section.id_value]
+      else
+        hsh[file][1] = section.id_value
+      end
+    end
+  end
+
+  def sections_only
+    @sections.select(&:is_section?)
+  end
+
   def to_csv
     @sections.map(&:to_csv).join("\n")
   end
 
   def to_json
     "{\n#{@sections.map { |section| "  #{section.to_json}" }.join(",\n")}\n}"
+  end
+
+  def to_grouped_json
+    "{\n#{group_by_range.map { |r, f| "  #{r} : #{f}}" }.join(",\n")}\n}"
   end
 
   def add_section(section, file)
@@ -78,6 +99,6 @@ class Section
 end
 
 method = "to_#{ARGV.shift}"
-puts SectionList.new.send(method)
+sections = SectionList.new
 
-
+puts sections.send(method)
