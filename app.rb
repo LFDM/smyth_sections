@@ -56,12 +56,20 @@ class SectionList
     @sections.map(&:to_csv).join("\n")
   end
 
+  def wrap_as_obj
+    "{\n#{yield}\n}"
+  end
+
   def to_json
-    "{\n#{@sections.map { |section| "  #{section.to_json}" }.join(",\n")}\n}"
+    wrap_as_obj do
+      @sections.map { |section| "  #{section.to_json}" }.join(",\n")
+    end
   end
 
   def to_grouped_json
-    "{\n#{group_by_range.map { |r, f| "  #{r} : #{f}}" }.join(",\n")}\n}"
+    wrap_as_obj do
+      group_by_range.map { |r, f| "  #{r} : #{f}}" }.join(",\n")
+    end
   end
 
   def add_section(section, file)
