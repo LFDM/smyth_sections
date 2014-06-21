@@ -1,5 +1,12 @@
 #!/usr/bin/env ruby
 
+
+# Run the script with one of the followings params
+#   csv
+#   json
+#   grouped_json
+
+
 require 'nokogiri'
 
 class SectionList
